@@ -57,18 +57,22 @@ async function getNewInstruction () {
 // 处理接收的消息
 export async function switchEvent (roomId, event) {
     const { sender, content, type } = event || {};
+    // content['m.new_content'] 为编辑后的内容
+    // content['m.relates_to'] 是回复谁的内容
+    // body开头为> 的为回复的 这里是被回复的消息内容 \n\n后面的内容为回复的内容
     if (content?.['msgtype'] !== 'm.text') return;
     if (sender === await client.getUserId()) return;
     const { body } = content || {};
+    const params = body.split(' ');
     await getNewInstruction();
     for (let i = 0; i < fileLen; i++) {
         const item = instruction[i];
         const { keys, action } = item;
-        if (keys.includes(body)) {
+        if (keys.includes(params[0])) {
             const { __dirname } = getDirPathAndFilePath(import.meta.url);
             const _path = path.resolve(__dirname, basePath, action);
             const module = await import(_path);
-            const result = await module.default();
+            const result = await module.default(...params.slice(1));
             sendMsg(roomId, result);
         }
     }
