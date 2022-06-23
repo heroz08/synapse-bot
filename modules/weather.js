@@ -1,4 +1,6 @@
-// tq, 天气, 下雨, xy
+// 获取天气
+// tq, 天气
+// ?localName---地点名称
 import axios from 'axios';
 
 export default async function getWeather (...args) {

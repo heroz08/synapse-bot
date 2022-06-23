@@ -20,7 +20,13 @@ async function getInstruction () {
             const buffer = await readFile(import.meta.url, `${basePath}/${item}`);
             const text = buffer.toString();
             const lines = text.split('\n');
-            const info = lines[0].slice(3);
+            obj.desc = lines[0].slice(3);
+            const info = lines[1].slice(3);
+            if (lines[2].includes('//')) {
+                const paramsInfo = lines[2].slice(3);
+                const paramsKeys = paramsInfo.split('; ');
+                obj.params = paramsKeys;
+            }
             const keys = info.split(', ');
             obj.keys = keys;
             instruction.push(obj);
@@ -64,16 +70,19 @@ export async function switchEvent (roomId, event) {
     if (sender === await client.getUserId()) return;
     const { body } = content || {};
     const params = body.split(' ');
+    const [instruct, ...extParams] = params;
     await getNewInstruction();
     for (let i = 0; i < fileLen; i++) {
         const item = instruction[i];
-        const { keys, action } = item;
-        if (keys.includes(params[0])) {
+        const { keys, action, params: paramsKeys } = item;
+        const query = action === 'help.js' ? [instruction, ...extParams] : extParams;
+        if (keys.includes(instruct)) {
             const { __dirname } = getDirPathAndFilePath(import.meta.url);
             const _path = path.resolve(__dirname, basePath, action);
             const module = await import(_path);
-            const result = await module.default(...params.slice(1));
-            sendMsg(roomId, result);
+            const result = await module.default(...query);
+            if (result) sendMsg(roomId, result);
+            break;
         }
     }
 }
