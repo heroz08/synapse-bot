@@ -14,7 +14,7 @@ export default function help (...args) {
                 }
                 return p;
             }).join(' | ');
-            const str = `${keyStr}\n${paramStr}`;
+            const str = `\n${keyStr}\n${paramStr}`;
             strs.push(str);
         }
     });
