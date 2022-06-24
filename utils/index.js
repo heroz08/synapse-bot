@@ -20,16 +20,19 @@ async function getInstruction () {
             const buffer = await readFile(import.meta.url, `${basePath}/${item}`);
             const text = buffer.toString();
             const lines = text.split('\n');
-            obj.desc = lines[0].slice(3);
+            const desc = lines[0].slice(3);
             const info = lines[1].slice(3);
-            if (lines[2].includes('//')) {
-                const paramsInfo = lines[2].slice(3);
-                const paramsKeys = paramsInfo.split('; ');
-                obj.params = paramsKeys;
+            if (desc && info) {
+                obj.desc = desc;
+                if (lines[2].includes('//')) {
+                    const paramsInfo = lines[2].slice(3);
+                    const paramsKeys = paramsInfo.split('; ');
+                    obj.params = paramsKeys;
+                }
+                const keys = info.split(', ');
+                obj.keys = keys;
+                instruction.push(obj);
             }
-            const keys = info.split(', ');
-            obj.keys = keys;
-            instruction.push(obj);
         }
     } catch (err) {
         console.log(err);
