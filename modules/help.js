@@ -6,7 +6,7 @@ export default function help (...args) {
     const strs = [];
     instruction.forEach(item => {
         const { action, keys = [], params = [], desc = '' } = item;
-        if (action !== 'help.js') {
+        if (action !== 'help.js' && keys.length) { // 排除没有keys的文件
             const keyStr = '  ' + desc + '关键词：' + keys.join(' | ');
             const paramStr = '  ' + desc + '参数：' + (params || []).map(p => {
                 if (p.includes('?')) {

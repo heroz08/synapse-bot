@@ -22,17 +22,15 @@ async function getInstruction () {
             const lines = text.split('\n');
             const desc = lines[0].slice(3);
             const info = lines[1].slice(3);
-            if (desc && info) {
-                obj.desc = desc;
-                if (lines[2].includes('//')) {
-                    const paramsInfo = lines[2].slice(3);
-                    const paramsKeys = paramsInfo.split('; ');
-                    obj.params = paramsKeys;
-                }
-                const keys = info.split(', ');
-                obj.keys = keys;
-                instruction.push(obj);
+            obj.desc = desc;
+            if (lines[2] && lines[2].includes('//')) { // 如果没有参数注释 就不添加params属性
+                const paramsInfo = lines[2].slice(3);
+                const paramsKeys = paramsInfo.split('; ');
+                obj.params = paramsKeys;
             }
+            const keys = info.split(', ').filter(item => item !== ''); // 如果info没有获取到keys就返回空数组
+            obj.keys = keys;
+            instruction.push(obj);
         }
     } catch (err) {
         console.log(err);
@@ -77,7 +75,7 @@ export async function switchEvent (roomId, event) {
     await getNewInstruction();
     for (let i = 0; i < fileLen; i++) {
         const item = instruction[i];
-        const { keys, action, params: paramsKeys } = item;
+        const { keys, action } = item;
         const query = action === 'help.js' ? [instruction, ...extParams] : extParams;
         if (keys.includes(instruct)) {
             const { __dirname } = getDirPathAndFilePath(import.meta.url);
