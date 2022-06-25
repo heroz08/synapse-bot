@@ -2,7 +2,7 @@
 // hp, help, 帮助, bz, bangzhu
 
 export default function help (...args) {
-    const [instruction, ...params] = args;
+    const [instruction] = args;
     const strs = [];
     instruction.forEach(item => {
         const { action, keys = [], params = [], desc = '' } = item;
