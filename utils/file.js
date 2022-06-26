@@ -1,7 +1,6 @@
 import fsp from 'fs/promises';
 import path from 'path';
 import url from 'url';
-import fs from 'fs';
 
 export function getDirPathAndFilePath (fileUrl) {
     const __filename = url.fileURLToPath(fileUrl);
@@ -24,7 +23,7 @@ export async function readFile (currentPath, dirPath) {
 export async function saveFile (data, currentPath, dirPath) {
     const { __dirname } = getDirPathAndFilePath(currentPath);
     const _path = path.resolve(__dirname, dirPath);
-    return await fsp.writeFile(_path, data)
+    return await fsp.writeFile(_path, data);
 }
 
 export async function isExist (currentPath, pathName) {
