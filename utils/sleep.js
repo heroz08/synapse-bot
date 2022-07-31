@@ -13,6 +13,3 @@ export async function resetSleepStatus() {
     return '设置失败';
   }
 }
-
-
-resetSleepStatus();

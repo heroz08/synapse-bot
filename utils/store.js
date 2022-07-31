@@ -32,3 +32,12 @@ export async function setStore(key, value) {
     return false;
   }
 }
+
+export async function initStore() {
+  try {
+    await isExist(base, path);
+  } catch (e) {
+    const data = {};
+    await saveFile(JSON.stringify(data), base, path);
+  }
+}

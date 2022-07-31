@@ -1,8 +1,14 @@
-import { client, switchEvent } from './utils/index.js';
+import { client, switchEvent, initStore } from './utils/index.js';
 import cronsRun from './crons/index.js';
 
-client.on('room.message', switchEvent);
+async function main() {
+  await initStore();
 
-client.start().then(() => console.log('workant 开始工作了! 🥰'));
+  client.on('room.message', switchEvent);
 
-cronsRun();
+  client.start().then(() => console.log('workant 开始工作了! 🥰'));
+
+  cronsRun();
+}
+
+main();
