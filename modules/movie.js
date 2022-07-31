@@ -1,6 +1,6 @@
 // 电影
 // dy, 电影
-// ?id---电影id 例如（dy 1 2 3 4 5）
+// ?id---电影id 例如（dy 1 2 3）
 
 
 import axios from 'axios';
