@@ -5,7 +5,7 @@
 
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { now, readAndSave, readFile } from '../utils/index.js';
+import { now, readAndSaveFile as readAndSave, readFile } from '../utils/index.js';
 import iconv from 'iconv-lite';
 import { Base64 as base64 } from 'js-base64';
 
